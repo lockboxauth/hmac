@@ -1,3 +1,3 @@
-module impractical.co/auth/hmac
+module lockbox.dev/hmac
 
 go 1.12
