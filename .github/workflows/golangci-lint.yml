@@ -10,7 +10,14 @@ jobs:
   golangci:
     name: lint
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: ['1.17']
+
     steps:
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
       - uses: actions/checkout@v2
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
