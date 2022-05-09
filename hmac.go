@@ -11,6 +11,10 @@ import (
 	"time"
 )
 
+const (
+	authorizationHeaderPieces = 3
+)
+
 var (
 	// ErrNoAuthHeader is returned when authenticating a request that has no Authorization header set.
 	ErrNoAuthHeader = errors.New("no Authorization header")
@@ -67,7 +71,7 @@ func (s Signer) AuthenticateRequest(r *http.Request, contentHash string) error {
 		return ErrNoAuthHeader
 	}
 	pieces := strings.Split(header, " ")
-	if len(pieces) != 3 {
+	if len(pieces) != authorizationHeaderPieces {
 		return ErrMalformedAuthHeader
 	}
 	if pieces[0] != s.OrgKey {
@@ -77,11 +81,10 @@ func (s Signer) AuthenticateRequest(r *http.Request, contentHash string) error {
 		return ErrInvalidVersion
 	}
 	pieces = strings.Split(pieces[2], ":")
-	if len(pieces) != 2 {
+	if len(pieces) != 2 { //nolint:gomnd // there should only be 2 pieces, and this is the only place that number is used
 		return ErrMalformedAuthHeader
 	}
-	key := pieces[0]
-	if key != s.Key {
+	if pieces[0] != s.Key {
 		return ErrUnknownKey
 	}
 	sig := pieces[1]
