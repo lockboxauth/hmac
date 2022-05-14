@@ -1814,14 +1814,11 @@ issues:
     # - abcdef
 
   # Excluding configuration per-path, per-linter, per-text and per-source
-  # exclude-rules:
-    # Exclude some linters from running on tests files.
-    # - path: _test\.go
-      # linters:
-        # - gocyclo
-        # - errcheck
-        # - dupl
-        # - gosec
+  exclude-rules:
+    # False positive: https://github.com/kunwardeep/paralleltest/issues/8.
+    - linters:
+      - paralleltest
+      text: "does not use range value in test Run"
 
     # Exclude known linters from partially hard-vendored code,
     # which is impossible to exclude via `nolint` comments.
